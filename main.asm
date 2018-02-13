@@ -13,10 +13,13 @@
 
 ; IDE/Compiler:
 
+%include "./functions.inc"
+
 bbits 32
 section .data
   ;Initialized data definitions go here
-
+	
+	welcomePrompt	db	"Welcome to my program" 0dh, 0ah, 0h
 section .bss
   ;Uninitialized memory reservations go here
 
@@ -26,6 +29,12 @@ global _start
 _start:
   nop
   ;Code starts here
+
+	push	welcomePrompt
+	call	printString
+	call	printEndl
+	
+	call	PrintRegisters
 
   ;Code ends here
   nop
