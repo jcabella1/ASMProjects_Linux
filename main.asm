@@ -15,11 +15,11 @@
 
 %include "./functions.inc"
 
-bbits 32
+bits 32
 section .data
   ;Initialized data definitions go here
 	
-	welcomePrompt	db	"Welcome to my program" 0dh, 0ah, 0h
+	welcomePrompt	db	"Welcome to my program", 0dh, 0ah, 0h
 section .bss
   ;Uninitialized memory reservations go here
 
@@ -31,8 +31,8 @@ _start:
   ;Code starts here
 
 	push	welcomePrompt
-	call	printString
-	call	printEndl
+	call	PrintString
+	call	Printendl
 	
 	call	PrintRegisters
 
