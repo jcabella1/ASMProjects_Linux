@@ -1,0 +1,17 @@
+     1                                  ; Assembler Linux Template
+     2                                  
+     3                                  bits 32
+     4                                  section .data
+     5                                  
+     6                                  section .bss
+     7                                  
+     8                                  section .text
+     9                                  	global _start
+    10                                  _start:
+    11 00000000 90                      	nop
+    12                                  	
+    13 00000001 90                      	nop
+    14 00000002 B801000000              	mov eax,1      ; Exit system call value
+    15 00000007 BB00000000              	mov ebx,0      ; Exit return code
+    16 0000000C CD80                    	int 80h        ; Call the kernel
+    17                                  
