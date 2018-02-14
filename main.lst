@@ -141,24 +141,35 @@
    141 00000000 57656C636F6D652074-     	welcomePrompt	db	"Welcome to my program", 0dh, 0ah, 0h
    142 00000009 6F206D792070726F67-
    143 00000012 72616D0D0A00       
-   144                                  section .bss
-   145                                    ;Uninitialized memory reservations go here
-   146                                  
-   147                                  section .text
-   148                                  
-   149                                  global _start
-   150                                  _start:
-   151 00000000 90                        nop
-   152                                    ;Code starts here
-   153                                  
-   154 00000001 68[00000000]            	push	welcomePrompt
-   155 00000006 E8(00000000)            	call	PrintString
-   156 0000000B E8(00000000)            	call	Printendl
-   157                                  	
-   158 00000010 E8(00000000)            	call	PrintRegisters
+   144                                  	
+   145 00000018 506C6561736520656E-     	inputPrompt		db	"Please enter an unsigned int", 0h
+   146 00000021 74657220616E20756E-
+   147 0000002A 7369676E656420696E-
+   148 00000033 7400               
+   149                                  	
+   150                                  section .bss
+   151                                    ;Uninitialized memory reservations go here
+   152                                  
+   153                                  section .text
+   154                                  
+   155                                  global _start
+   156                                  _start:
+   157 00000000 90                        nop
+   158                                    ;Code starts here
    159                                  
-   160                                    ;Code ends here
-   161 00000015 90                        nop
-   162 00000016 B801000000                mov eax,1 ; Exit system call value
-   163 0000001B BB00000000                mov ebx,0 ; Exit return code
-   164 00000020 CD80                      int 80h ; Call the kernel
+   160 00000001 68[00000000]            	push	welcomePrompt
+   161 00000006 E8(00000000)            	call	PrintString
+   162 0000000B E8(00000000)            	call	Printendl
+   163                                  	
+   164 00000010 68[18000000]            	push	inputPrompt
+   165 00000015 E8(00000000)            	call	PrintString
+   166 0000001A E8(00000000)            	call	InputUInt
+   167 0000001F E8(00000000)            	call	Printendl
+   168                                  	
+   169 00000024 E8(00000000)            	call	PrintRegisters
+   170                                  
+   171                                    ;Code ends here
+   172 00000029 90                        nop
+   173 0000002A B801000000                mov eax,1 ; Exit system call value
+   174 0000002F BB00000000                mov ebx,0 ; Exit return code
+   175 00000034 CD80                      int 80h ; Call the kernel
