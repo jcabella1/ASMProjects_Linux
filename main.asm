@@ -24,7 +24,7 @@ section .data
 	
 	welcomePrompt	db	"Welcome to my program", 0dh, 0ah, 0h
 	
-	valueString		db	"A = 10, B = 20, C = 30", 0dh, 0ah, 0h
+	valueString		db	"A = 10h, B = 2000h, C = 30000h", 0dh, 0ah, 0h
 	
 	resultString1	dd	"A + (B + C) = D. D = ", 0h
 	
