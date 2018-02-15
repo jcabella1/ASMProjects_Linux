@@ -24,18 +24,21 @@ section .data
 	
 	welcomePrompt	db	"Welcome to my program", 0dh, 0ah, 0h
 	
-	inputPrompt		db	"Please enter an unsigned int", 0h
+	valueString		db	"A = 10, B = 20, C = 30", 0dh, 0ah, 0h
+	
+	resultString1	dd	"A + (B + C) = D. D = ", 0h
+	
 	
 	; Data to be used in the program
 	
-	A	db	10		;Byte
-	B	dw	20		;Word
-	C	dd	30		;Double word
+	A	db	10h		;Byte
+	B	dw	2000h	;Word
+	C	dd	30000h	;Double word
 	
 section .bss
   ;Uninitialized memory reservations go here
   
-	D	resd	4		;Reserve a double word of 4 bytes
+	D	resd	4		;Reserve a double word
 
 section .text
 
@@ -44,17 +47,34 @@ _start:
   nop
   ;Code starts here
 
+	;Print the welcome message
 	push	welcomePrompt
 	call	PrintString
 	call	Printendl
 	
-	push	inputPrompt
+	;Print the values A, B, and C
+	push	valueString
 	call	PrintString
-	call	InputUInt
 	call	Printendl
 	
-	call	PrintRegisters
-
+	mov		eax, 0h		; Zero out eax
+	mov		ebx, 0h		; Zero out ebx
+	
+	; A + (B + C) = D
+	mov		ax, [B]		; Move B to ax
+	mov		ebx, [C]	; Move C to ebx
+	add		eax, ebx	; Add ebx to eax
+	add		al, [A]		; Add A to the value in al
+	mov		[D], eax	; Move the value in ax to D (final value)
+	
+	;Print the final value
+	push	resultString1
+	call	PrintString
+	
+	push	dword [D]
+	call	Print32bitNumHex	;Print the value in hex
+	call	Printendl
+	
   ;Code ends here
   nop
   mov eax,1 ; Exit system call value
