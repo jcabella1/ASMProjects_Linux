@@ -26,7 +26,9 @@ section .data
 	
 	valueString		db	"A = 10h, B = 2000h, C = 30000h", 0dh, 0ah, 0h
 	
-	resultString1	dd	"A + (B + C) = D. D = ", 0h
+	equation1		dd	"A + (B + C) = D. D = ", 0h
+	
+	equation2		dd	"(A + C) - B = D. D = ", 0h
 	
 	
 	; Data to be used in the program
@@ -57,21 +59,43 @@ _start:
 	call	PrintString
 	call	Printendl
 	
+	;Print the equation
+	push	equation1
+	call	PrintString
+	
 	mov		eax, 0h		; Zero out eax
 	mov		ebx, 0h		; Zero out ebx
 	
-	; A + (B + C) = D
+	; Perform the equation: A + (B + C) = D
 	mov		ax, [B]		; Move B to ax
 	mov		ebx, [C]	; Move C to ebx
 	add		eax, ebx	; Add ebx to eax
 	add		al, [A]		; Add A to the value in al
-	mov		[D], eax	; Move the value in ax to D (final value)
+	mov		[D], eax	; Move the value in eax to D (final value)
 	
-	;Print the final value
-	push	resultString1
+	;Print the final value	
+	push	dword [D]
+	call	Print32bitNumHex	;Print the value in hex
+	call	Printendl
+	
+	;Print out the equation
+	push 	equation2
 	call	PrintString
 	
-	push	dword [D]
+	; Zero out all values
+	mov		eax, 0h
+	mov		ebx, 0h
+	mov		[D], eax
+	
+	; Perform the equation: (A + C) - B = D
+	mov		al, [A]		; Move A to al
+	mov		ebx, [C]	; Move C to ebx
+	add		eax, ebx	; Add value in ebx to value in eax
+	sub		eax, [B]	; Subtract eax by B
+	mov		[D], eax	; Move the final value in eax to D
+	
+	;Print out the final value
+	push	DWORD [D]
 	call	Print32bitNumHex	;Print the value in hex
 	call	Printendl
 	
