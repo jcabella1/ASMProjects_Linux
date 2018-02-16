@@ -150,87 +150,89 @@
    150 0000002A 2C2043203D20333030-
    151 00000033 3030680D0A00       
    152                                  	
-   153 00000039 41202B202842202B20-     	equation1		dd	"A + (B + C) = D. D = ", 0h
-   154 00000042 4329203D20442E2044-
-   155 0000004B 203D20000000000000-
-   156 00000054 00                 
-   157                                  	
-   158 00000055 2841202B204329202D-     	equation2		dd	"(A + C) - B = D. D = ", 0h
-   159 0000005E 2042203D20442E2044-
-   160 00000067 203D20000000000000-
-   161 00000070 00                 
-   162                                  	
-   163                                  	
-   164                                  	; Data to be used in the program
+   153 00000039 54686520726573756C-     	equation1		dd	"The result of A + (B + C) = D is: ", 0h
+   154 00000042 74206F662041202B20-
+   155 0000004B 2842202B204329203D-
+   156 00000054 20442069733A200000-
+   157 0000005D 00000000           
+   158                                  	
+   159 00000061 54686520726573756C-     	equation2		dd	"The result of (A + C) - B = D is: ", 0h
+   160 0000006A 74206F66202841202B-
+   161 00000073 204329202D2042203D-
+   162 0000007C 20442069733A200000-
+   163 00000085 00000000           
+   164                                  	
    165                                  	
-   166 00000071 10                      	A	db	10h		;Byte
-   167 00000072 0020                    	B	dw	2000h	;Word
-   168 00000074 00000300                	C	dd	30000h	;Double word
-   169                                  	
-   170                                  section .bss
-   171                                    ;Uninitialized memory reservations go here
-   172                                    
-   173 00000000 <res 00000010>          	D	resd	4		;Reserve a double word
-   174                                  
-   175                                  section .text
+   166                                  	; Data to be used in the program
+   167                                  	
+   168 00000089 10                      	A	db	10h		;Byte
+   169 0000008A 0020                    	B	dw	2000h	;Word
+   170 0000008C 00000300                	C	dd	30000h	;Double word
+   171                                  	
+   172                                  section .bss
+   173                                    ;Uninitialized memory reservations go here
+   174                                    
+   175 00000000 <res 00000010>          	D	resd	4		;Reserve a double word
    176                                  
-   177                                  global _start
-   178                                  _start:
-   179 00000000 90                        nop
-   180                                    ;Code starts here
-   181                                  
-   182                                  	;Print the welcome message
-   183 00000001 68[00000000]            	push	welcomePrompt
-   184 00000006 E8(00000000)            	call	PrintString
-   185 0000000B E8(00000000)            	call	Printendl
-   186                                  	
-   187                                  	;Print the values A, B, and C
-   188 00000010 68[18000000]            	push	valueString
-   189 00000015 E8(00000000)            	call	PrintString
-   190 0000001A E8(00000000)            	call	Printendl
-   191                                  	
-   192                                  	;Print the equation
-   193 0000001F 68[39000000]            	push	equation1
-   194 00000024 E8(00000000)            	call	PrintString
-   195                                  	
-   196 00000029 B800000000              	mov		eax, 0h		; Zero out eax
-   197 0000002E BB00000000              	mov		ebx, 0h		; Zero out ebx
-   198                                  	
-   199                                  	; Perform the equation: A + (B + C) = D
-   200 00000033 66A1[72000000]          	mov		ax, [B]		; Move B to ax
-   201 00000039 8B1D[74000000]          	mov		ebx, [C]	; Move C to ebx
-   202 0000003F 01D8                    	add		eax, ebx	; Add ebx to eax
-   203 00000041 0205[71000000]          	add		al, [A]		; Add A to the value in al
-   204 00000047 A3[00000000]            	mov		[D], eax	; Move the value in eax to D (final value)
-   205                                  	
-   206                                  	;Print the final value	
-   207 0000004C FF35[00000000]          	push	dword [D]
-   208 00000052 E8(00000000)            	call	Print32bitNumHex	;Print the value in hex
-   209 00000057 E8(00000000)            	call	Printendl
-   210                                  	
-   211                                  	;Print out the equation
-   212 0000005C 68[55000000]            	push 	equation2
-   213 00000061 E8(00000000)            	call	PrintString
-   214                                  	
-   215                                  	; Zero out all values
-   216 00000066 B800000000              	mov		eax, 0h
-   217 0000006B BB00000000              	mov		ebx, 0h
-   218 00000070 A3[00000000]            	mov		[D], eax
-   219                                  	
-   220                                  	; Perform the equation: (A + C) - B = D
-   221 00000075 A0[71000000]            	mov		al, [A]		; Move A to al
-   222 0000007A 8B1D[74000000]          	mov		ebx, [C]	; Move C to ebx
-   223 00000080 01D8                    	add		eax, ebx	; Add value in ebx to value in eax
-   224 00000082 2B05[72000000]          	sub		eax, [B]	; Subtract eax by B
-   225 00000088 A3[00000000]            	mov		[D], eax	; Move the final value in eax to D
-   226                                  	
-   227                                  	;Print out the final value
-   228 0000008D FF35[00000000]          	push	DWORD [D]
-   229 00000093 E8(00000000)            	call	Print32bitNumHex	;Print the value in hex
-   230 00000098 E8(00000000)            	call	Printendl
-   231                                  	
-   232                                    ;Code ends here
-   233 0000009D 90                        nop
-   234 0000009E B801000000                mov eax,1 ; Exit system call value
-   235 000000A3 BB00000000                mov ebx,0 ; Exit return code
-   236 000000A8 CD80                      int 80h ; Call the kernel
+   177                                  section .text
+   178                                  
+   179                                  global _start
+   180                                  _start:
+   181 00000000 90                        nop
+   182                                    ;Code starts here
+   183                                  
+   184                                  	;Print the welcome message
+   185 00000001 68[00000000]            	push	welcomePrompt
+   186 00000006 E8(00000000)            	call	PrintString
+   187 0000000B E8(00000000)            	call	Printendl
+   188                                  	
+   189                                  	;Print the values A, B, and C
+   190 00000010 68[18000000]            	push	valueString
+   191 00000015 E8(00000000)            	call	PrintString
+   192 0000001A E8(00000000)            	call	Printendl
+   193                                  	
+   194                                  	;Print the equation
+   195 0000001F 68[39000000]            	push	equation1
+   196 00000024 E8(00000000)            	call	PrintString
+   197                                  	
+   198 00000029 B800000000              	mov		eax, 0h		; Zero out eax
+   199 0000002E BB00000000              	mov		ebx, 0h		; Zero out ebx
+   200                                  	
+   201                                  	; Perform the equation: A + (B + C) = D
+   202 00000033 66A1[8A000000]          	mov		ax, [B]		; Move B to ax
+   203 00000039 8B1D[8C000000]          	mov		ebx, [C]	; Move C to ebx
+   204 0000003F 01D8                    	add		eax, ebx	; Add ebx to eax
+   205 00000041 0205[89000000]          	add		al, [A]		; Add A to the value in al
+   206 00000047 A3[00000000]            	mov		[D], eax	; Move the value in eax to D (final value)
+   207                                  	
+   208                                  	;Print the final value	
+   209 0000004C FF35[00000000]          	push	dword [D]
+   210 00000052 E8(00000000)            	call	Print32bitNumHex	;Print the value in hex
+   211 00000057 E8(00000000)            	call	Printendl
+   212                                  	
+   213                                  	;Print out the equation
+   214 0000005C 68[61000000]            	push 	equation2
+   215 00000061 E8(00000000)            	call	PrintString
+   216                                  	
+   217                                  	; Zero out all values
+   218 00000066 B800000000              	mov		eax, 0h
+   219 0000006B BB00000000              	mov		ebx, 0h
+   220 00000070 A3[00000000]            	mov		[D], eax
+   221                                  	
+   222                                  	; Perform the equation: (A + C) - B = D
+   223 00000075 A0[89000000]            	mov		al, [A]		; Move A to al
+   224 0000007A 8B1D[8C000000]          	mov		ebx, [C]	; Move C to ebx
+   225 00000080 01D8                    	add		eax, ebx	; Add value in ebx to value in eax
+   226 00000082 2B05[8A000000]          	sub		eax, [B]	; Subtract eax by B
+   227 00000088 A3[00000000]            	mov		[D], eax	; Move the final value in eax to D
+   228                                  	
+   229                                  	;Print out the final value
+   230 0000008D FF35[00000000]          	push	DWORD [D]
+   231 00000093 E8(00000000)            	call	Print32bitNumHex	;Print the value in hex
+   232 00000098 E8(00000000)            	call	Printendl
+   233                                  	
+   234                                    ;Code ends here
+   235 0000009D 90                        nop
+   236 0000009E B801000000                mov eax,1 ; Exit system call value
+   237 000000A3 BB00000000                mov ebx,0 ; Exit return code
+   238 000000A8 CD80                      int 80h ; Call the kernel

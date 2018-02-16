@@ -26,9 +26,9 @@ section .data
 	
 	valueString		db	"A = 10h, B = 2000h, C = 30000h", 0dh, 0ah, 0h
 	
-	equation1		dd	"A + (B + C) = D. D = ", 0h
+	equation1		dd	"The result of A + (B + C) = D is: ", 0h
 	
-	equation2		dd	"(A + C) - B = D. D = ", 0h
+	equation2		dd	"The result of (A + C) - B = D is: ", 0h
 	
 	
 	; Data to be used in the program
