@@ -1,4 +1,3 @@
-; Assembler Linux Template
 ; Program Description: 
 	; A program that performs the following equations:
 	; A + (B + C) = D
@@ -89,9 +88,9 @@ _start:
 	
 	; Perform the equation: (A + C) - B = D
 	mov		al, [A]		; Move A to al
-	mov		ebx, [C]	; Move C to ebx
-	add		eax, ebx	; Add value in ebx to value in eax
-	sub		eax, [B]	; Subtract eax by B
+	add		eax, [C]	; Add C to value in eax
+	mov		bx, [B]		; Move B to bx
+	sub		eax, ebx	; Subtract eax by ebx
 	mov		[D], eax	; Move the final value in eax to D
 	
 	;Print out the final value
