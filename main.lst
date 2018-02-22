@@ -135,30 +135,40 @@
    135                              <1> 
    136                                  
    137                                  bits 32
-   138                                  section .data
-   139                                    ;Initialized data definitions go here
-   140                                  	
-   141 00000000 57656C636F6D652074-     	welcomePrompt	db	"Welcome to my program", 0dh, 0ah, 0h
-   142 00000009 6F206D792070726F67-
-   143 00000012 72616D0D0A00       
-   144                                  section .bss
-   145                                    ;Uninitialized memory reservations go here
-   146                                  
-   147                                  section .text
-   148                                  
-   149                                  global _start
-   150                                  _start:
-   151 00000000 90                        nop
-   152                                    ;Code starts here
+   138                                  
+   139                                  section .data
+   140                                  
+   141                                    ;Initialized data definitions go here
+   142                                  	
+   143 00000000 57656C636F6D652074-     	openPrompt	db	"Welcome to my program", 0ah, 0dh, 0h
+   144 00000009 6F206D792070726F67-
+   145 00000012 72616D0A0D00       
+   146 00000018 50726F6772616D2065-     	closePrompt	db	"Program ending, have a nice day.", 0ah, 0dh, 0h
+   147 00000021 6E64696E672C206861-
+   148 0000002A 76652061206E696365-
+   149 00000033 206461792E0A0D00   
+   150                                  	
+   151                                  section .bss
+   152                                    ;Uninitialized memory reservations go here
    153                                  
-   154 00000001 68[00000000]            	push	welcomePrompt
-   155 00000006 E8(00000000)            	call	PrintString
-   156 0000000B E8(00000000)            	call	Printendl
-   157                                  	
-   158 00000010 E8(00000000)            	call	PrintRegisters
+   154                                  section .text
+   155                                  
+   156                                  global _start
+   157                                  _start:
+   158 00000000 90                        nop
    159                                  
-   160                                    ;Code ends here
-   161 00000015 90                        nop
-   162 00000016 B801000000                mov eax,1 ; Exit system call value
-   163 0000001B BB00000000                mov ebx,0 ; Exit return code
-   164 00000020 CD80                      int 80h ; Call the kernel
+   160 00000001 68[00000000]            	push	openPrompt		;Print the opening/welcome prompt
+   161 00000006 E8(00000000)            	call	PrintString		;
+   162 0000000B E8(00000000)            	call	Printendl		;
+   163                                  
+   164                                  	;Code starts here
+   165                                  	
+   166 00000010 68[18000000]            	push	closePrompt		;Print the closing/ending prompt
+   167 00000015 E8(00000000)            	call	PrintString		;
+   168 0000001A E8(00000000)            	call	Printendl		;
+   169                                  
+   170                                  	;Code ends here	
+   171 0000001F 90                      	nop
+   172 00000020 B801000000              	mov eax,1 ; Exit system call value
+   173 00000025 BB00000000              	mov ebx,0 ; Exit return code
+   174 0000002A CD80                    	int 80h ; Call the kernel
